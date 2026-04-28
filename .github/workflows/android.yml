@@ -21,11 +21,14 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
+    - name: List Gradle Tasks (Diagnostic)
+      run: ./gradlew tasks
+
     - name: Build APK
-      run: ./gradlew assemble --stacktrace
+      run: ./gradlew :app:assembleDebug --stacktrace
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: LittleMusicPlayer-APK
-        path: "**/build/outputs/apk/debug/*.apk"
+        name: MusicPlayer-Debug-APK
+        path: app/build/outputs/apk/debug/*.apk
