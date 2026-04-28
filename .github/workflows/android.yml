@@ -3,13 +3,10 @@ name: Build Android APK
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -24,11 +21,11 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    - name: Build with Gradle
-      run: ./gradlew :app:assembleDebug
+    - name: Build APK
+      run: ./gradlew assemble --stacktrace
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: LittleMusicPlayer-Debug
-        path: app/build/outputs/apk/debug/app-debug.apk
+        name: LittleMusicPlayer-APK
+        path: "**/build/outputs/apk/debug/*.apk"
