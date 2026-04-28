@@ -1,2 +1,3 @@
+// Memastikan gradle tahu folder 'app' adalah sebuah modul
 rootProject.name = "little-music-player"
 include ':app'
