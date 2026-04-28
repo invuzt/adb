@@ -1,38 +1,14 @@
-FROM debian:bookworm-slim AS builder
+FROM openjdk:17-jdk-slim
+ENV ANDROID_SDK_ROOT /opt/android-sdk
+RUN apt-get update && apt-get install -y wget unzip
+RUN wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O sdk.zip     && mkdir -p $ANDROID_SDK_ROOT/cmdline-tools     && unzip sdk.zip -d $ANDROID_SDK_ROOT/cmdline-tools     && mv $ANDROID_SDK_ROOT/cmdline-tools/cmdline-tools $ANDROID_SDK_ROOT/cmdline-tools/latest
+RUN yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
+RUN $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0" "platforms;android-34"
 
-# need git, openjdk and android sdk
-RUN apt-get update && apt-get install -y git openjdk-17-jdk-headless sdkmanager
+WORKDIR /app
+COPY . .
+RUN chmod +x gradlew
+RUN ./gradlew :app:assembleDebug
 
-# get required android sdk
-RUN sdkmanager "build-tools;30.0.3" "platforms;android-33"
-
-# accept licenses for android sdk
-RUN yes | sdkmanager --licenses
-
-WORKDIR /home
-
-# create a debug keystore for signing apk
-RUN keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
-
-# copy source code
-COPY . /home/little-music-player
-
-# enter project folder
-WORKDIR /home/little-music-player
-
-# create a keystore.properties file in the PARENT DIRECTORY of little-file-explorer
-RUN echo "\
-storePassword=android\n\
-keyPassword=android\n\
-keyAlias=androiddebugkey\n\
-storeFile=/home/debug.keystore\
-" > keystore.properties
-
-# run the gradlew wrapper to build apk
-RUN chmod 700 ./gradlew
-
-RUN ANDROID_HOME=/opt/android-sdk ./gradlew assembleDebug --no-daemon --console=plain
-
-FROM scratch AS output
-
-COPY --from=builder /home/little-music-player/app/build/outputs/apk/debug/app-debug.apk .
+# Copy out the APK
+CMD cp app/build/outputs/apk/debug/app-debug.apk /output/
