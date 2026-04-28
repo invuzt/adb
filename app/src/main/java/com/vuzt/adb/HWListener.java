@@ -1,4 +1,4 @@
-package com.martinmimigames.littlemusicplayer;
+package com.vuzt.adb;
 
 
 import static android.content.Intent.EXTRA_KEY_EVENT;

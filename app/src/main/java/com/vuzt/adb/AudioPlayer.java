@@ -1,4 +1,4 @@
-package com.martinmimigames.littlemusicplayer;
+package com.vuzt.adb;
 
 import android.media.AudioAttributes;
 import android.media.AudioManager;

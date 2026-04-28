@@ -1,4 +1,4 @@
-package com.martinmimigames.littlemusicplayer;
+package com.vuzt.adb;
 
 import android.content.Context;
 import android.net.Uri;

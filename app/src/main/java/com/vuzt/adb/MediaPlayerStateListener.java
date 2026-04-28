@@ -1,4 +1,4 @@
-package com.martinmimigames.littlemusicplayer;
+package com.vuzt.adb;
 
 interface MediaPlayerStateListener {
 

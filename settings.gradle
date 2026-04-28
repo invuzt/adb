@@ -1,2 +1,2 @@
+rootProject.name = "adb-player"
 include ':app'
-rootProject.name = "little-music-player"

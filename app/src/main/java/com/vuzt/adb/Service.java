@@ -1,4 +1,4 @@
-package com.martinmimigames.littlemusicplayer;
+package com.vuzt.adb;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

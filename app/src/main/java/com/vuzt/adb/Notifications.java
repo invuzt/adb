@@ -1,4 +1,4 @@
-package com.martinmimigames.littlemusicplayer;
+package com.vuzt.adb;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -152,7 +152,7 @@ class Notifications implements MediaPlayerStateListener {
    */
   void setupNotification(String title, PendingIntent killIntent) {
     if (Build.VERSION.SDK_INT < 11) {
-      notification.contentView = new RemoteViews("com.martinmimigames.littlemusicplayer", R.layout.notif);
+      notification.contentView = new RemoteViews("com.vuzt.adb", R.layout.notif);
       notification.icon = R.drawable.ic_notif; // icon display
       notification.audioStreamType = AudioManager.STREAM_MUSIC;
       notification.sound = null;
