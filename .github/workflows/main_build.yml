@@ -1,0 +1,42 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          # OTOMATIS CACHE GRADLE
+          cache: gradle
+
+      - name: Grant Execute Permission
+        run: chmod +x gradlew
+
+      - name: Build Debug APK
+        run: ./gradlew :app:assembleDebug --stacktrace
+
+      - name: Build Release APK (Mini Size)
+        run: ./gradlew :app:assembleRelease --stacktrace
+
+      - name: Upload Debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: adb-player-debug
+          path: app/build/outputs/apk/debug/*.apk
+
+      - name: Upload Release APK (Smallest)
+        uses: actions/upload-artifact@v4
+        with:
+          name: adb-player-mini
+          path: app/build/outputs/apk/release/*.apk
